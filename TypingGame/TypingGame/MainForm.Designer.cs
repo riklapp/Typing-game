@@ -25,7 +25,6 @@
             this.btnExit = new System.Windows.Forms.Button();
             this.SuspendLayout();
 
-            // TableLayoutPanel settings
             this.tableLayoutPanel.ColumnCount = 1;
             this.tableLayoutPanel.RowCount = 3;
             this.tableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -34,7 +33,6 @@
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33F));
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33F));
 
-            // Button settings
             this.btnStartGame.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnStartGame.Text = "Start Game";
             this.btnStartGame.Click += new System.EventHandler(this.btnStartGame_Click);
@@ -47,15 +45,12 @@
             this.btnExit.Text = "Exit";
             this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
 
-            // Add buttons to the TableLayoutPanel
             this.tableLayoutPanel.Controls.Add(this.btnStartGame, 0, 0);
             this.tableLayoutPanel.Controls.Add(this.btnSettings, 0, 1);
             this.tableLayoutPanel.Controls.Add(this.btnExit, 0, 2);
 
-            // Add TableLayoutPanel to the Form
             this.Controls.Add(this.tableLayoutPanel);
 
-            // Other form settings
             this.Name = "MainForm";
             this.Text = "RPG Game";
             this.Load += new System.EventHandler(this.MainForm_Load);
