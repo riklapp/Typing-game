@@ -13,7 +13,6 @@ namespace RPGGame
             Health = 100;
             Damage = 15;
         }
-
-        // Additional player methods
+        
     }
 }
