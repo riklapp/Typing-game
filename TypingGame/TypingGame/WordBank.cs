@@ -6,8 +6,7 @@ namespace RPGGame
     {
         public static List<string> GetWords(int difficultyLevel)
         {
-            // Return a list of words based on difficulty
-            return new List<string> { "sword", "shield", "dragon" }; // Example words
+            return new List<string> { "sword", "shield", "dragon" };
         }
     }
 }
