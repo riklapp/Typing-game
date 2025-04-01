@@ -10,11 +10,10 @@ namespace RPGGame
 
         public Enemy()
         {
-            Name = "Goblin"; // Example enemy
+            Name = "";
             Health = 100;
             Damage = 10;
         }
 
-        // Additional enemy methods
     }
 }
