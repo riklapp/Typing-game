@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Windows.Forms;
+﻿// GameForm.cs
 
 namespace RPGGame
 {
@@ -18,7 +14,6 @@ namespace RPGGame
         private Enemy currentEnemy;
         private Player player;
 
-        // UI Controls
         private Button btnAttack;
         private Label lblWordToType;
         private TextBox txtInput;
@@ -28,7 +23,6 @@ namespace RPGGame
         private ProgressBar pbPlayerHealth;
         private Button btnMenu;
 
-        // New fields for map levels
         private List<MapLevel> mapLevels = new List<MapLevel>();
         private int currentMapLevel = 0;
         private bool showMap = false;
@@ -39,18 +33,17 @@ namespace RPGGame
             this.WindowState = FormWindowState.Maximized;
             this.FormBorderStyle = FormBorderStyle.None;
             this.player = new Player();
-            this.Resize += GameForm_Resize; // Add resize handler
+            this.Resize += GameForm_Resize;
             InitializeMainMenu();
         }
 
         private void GameForm_Resize(object sender, EventArgs e)
         {
-            // Reinitialize current screen when window is resized
             if (showMap)
             {
                 InitializeMap();
             }
-            else if (this.Controls.Count > 0 && this.Controls[0] is Button) // Check if in battle
+            else if (this.Controls.Count > 0 && this.Controls[0] is Button)
             {
                 SetupBattle();
             }
@@ -69,12 +62,11 @@ namespace RPGGame
                 timer = null;
             }
 
-            ClearAllControls(); // Use our safe clear method
+            ClearAllControls();
 
             int centerX = this.ClientSize.Width / 2;
             int centerY = this.ClientSize.Height / 2;
 
-            // Title Label
             Label lblTitle = new Label
             {
                 Text = "KEYBOARD KNIGHT",
@@ -86,7 +78,6 @@ namespace RPGGame
             lblTitle.Location = new Point(centerX - (lblTitle.Width / 2), centerY - 200);
             this.Controls.Add(lblTitle);
 
-            // Difficulty Selection
             Label lblSelectDifficulty = new Label
             {
                 Text = "SELECT DIFFICULTY:",
@@ -97,7 +88,6 @@ namespace RPGGame
             lblSelectDifficulty.Location = new Point(centerX - (lblSelectDifficulty.Width / 2), centerY - 100);
             this.Controls.Add(lblSelectDifficulty);
 
-            // Difficulty Radio Buttons
             int radioButtonWidth = 200;
             int radioButtonHeight = 40;
 
@@ -140,7 +130,6 @@ namespace RPGGame
 
             selectedDifficulty = DifficultyLevel.Easy;
 
-            // Start Game Button
             Button btnStartGame = new Button
             {
                 Text = "START GAME",
@@ -158,7 +147,6 @@ namespace RPGGame
             };
             this.Controls.Add(btnStartGame);
 
-            // Exit Button
             Button btnExit = new Button
             {
                 Text = "EXIT",
@@ -173,7 +161,6 @@ namespace RPGGame
             btnExit.Click += btnExit_Click;
             this.Controls.Add(btnExit);
 
-            // Set background
             this.BackColor = Color.FromArgb(30, 30, 40);
         }
 
@@ -183,10 +170,10 @@ namespace RPGGame
             mapLevels.Clear();
             currentMapLevel = 0;
 
-            ClearAllControls(); // Clear existing controls first
+            ClearAllControls();
 
-            int startX = this.ClientSize.Width / 2 - 300; // Centered horizontally
-            int startY = this.ClientSize.Height / 3; // Start 1/3 down the screen
+            int startX = this.ClientSize.Width / 2 - 300;
+            int startY = this.ClientSize.Height / 3;
             int spacing = 120;
 
             for (int i = 0; i < 10; i++)
@@ -194,18 +181,16 @@ namespace RPGGame
                 var difficulty = i < 3 ? DifficultyLevel.Easy :
                                 i < 7 ? DifficultyLevel.Medium : DifficultyLevel.Hard;
 
-                // Use the constructor with all parameters
                 mapLevels.Add(new MapLevel(
                     levelNumber: i + 1,
                     position: new Point(startX + (i * spacing), startY),
                     difficulty: difficulty,
-                    isCurrent: i == 0,  // First level is current
+                    isCurrent: i == 0,
                     isCompleted: false));
             }
 
             this.Invalidate();
 
-            // Add "Back to Menu" button
             var btnMenu = new Button
             {
                 Text = "MAIN MENU",
@@ -216,14 +201,13 @@ namespace RPGGame
                 FlatStyle = FlatStyle.Flat
             };
             btnMenu.FlatAppearance.BorderSize = 0;
-            btnMenu.Location = new Point(20, this.ClientSize.Height - 80); // Fixed position
+            btnMenu.Location = new Point(20, this.ClientSize.Height - 80);
             btnMenu.Click += (s, e) => {
                 var result = MessageBox.Show("Return to main menu? Current battle progress will be lost.",
                                            "Confirm Exit",
                                            MessageBoxButtons.YesNo);
                 if (result == DialogResult.Yes)
                 {
-                    // Clear map state
                     showMap = false;
                     mapLevels.Clear();
 
@@ -239,7 +223,7 @@ namespace RPGGame
             };
             this.Controls.Add(btnMenu);
 
-            this.Invalidate(); // Force redraw
+            this.Invalidate();
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -248,7 +232,6 @@ namespace RPGGame
 
             if (showMap)
             {
-                // Draw title
                 var title = "CHOOSE YOUR PATH";
                 var font = new Font("Arial", 24, FontStyle.Bold);
                 var size = e.Graphics.MeasureString(title, font);
@@ -256,7 +239,6 @@ namespace RPGGame
                     (this.ClientSize.Width - size.Width) / 2,
                     50);
 
-                // Draw connections between levels
                 for (int i = 0; i < mapLevels.Count - 1; i++)
                 {
                     var start = new Point(
@@ -270,13 +252,11 @@ namespace RPGGame
                     e.Graphics.DrawLine(IsLevelUnlocked(i + 1) ? Pens.White : Pens.Gray, start, end);
                 }
 
-                // Draw levels
                 foreach (var level in mapLevels)
                 {
                     level.Draw(e.Graphics);
                 }
 
-                // Draw player info
                 e.Graphics.DrawString($"Score: {player.Score}\nLevels Completed: {mapLevels.Count(l => l.IsCompleted)}/{mapLevels.Count}",
                     new Font("Arial", 16),
                     Brushes.White,
@@ -303,8 +283,8 @@ namespace RPGGame
                         if (level.IsCurrent ||
                            (level.LevelNumber == currentMapLevel + 1 && mapLevels[currentMapLevel].IsCompleted))
                         {
-                            showMap = false; // Hide the map immediately
-                            this.Invalidate(); // Force redraw to remove map
+                            showMap = false;
+                            this.Invalidate();
                             StartLevel(level);
                             return;
                         }
@@ -315,7 +295,6 @@ namespace RPGGame
 
         private void StartLevel(MapLevel level)
         {
-            // Clean up existing timer if any
             if (timer != null)
             {
                 timer.Stop();
@@ -338,12 +317,10 @@ namespace RPGGame
             timeLimit = selectedDifficulty switch
             {
                 DifficultyLevel.Easy => 5000,
-                DifficultyLevel.Medium => 3500,
-                DifficultyLevel.Hard => 2000,
-                _ => 3000
+                DifficultyLevel.Medium => 4000,
+                DifficultyLevel.Hard => 3500,
             };
 
-            // Create enemy with current level number
             currentEnemy = new Enemy(selectedDifficulty, currentMapLevel + 1);
             player = new Player();
             words = WordBank.GetWords((int)selectedDifficulty);
@@ -490,7 +467,6 @@ namespace RPGGame
             btnDoubleDamage.Click += AbilityButton_Click;
             this.Controls.Add(btnDoubleDamage);
 
-            // Start first attack immediately
             BtnAttack_Click(null, EventArgs.Empty);
             RefreshAbilityButtons();
         }
@@ -542,7 +518,7 @@ namespace RPGGame
                     break;
             }
 
-            RefreshAbilityButtons(); // Update all ability buttons after any ability is used
+            RefreshAbilityButtons();
         }
 
         private void SkipCurrentWord()
@@ -557,12 +533,11 @@ namespace RPGGame
 
         private void AddExtraTime()
         {
-            this.timer.Stop(); // Use 'this.timer' to refer to the field
+            this.timer.Stop();
             timeLimit += 3000;
             this.timer.Interval = timeLimit;
             this.timer.Start();
 
-            // Visual feedback
             var extraTimeLabel = new Label
             {
                 Text = "+3 SECONDS",
@@ -575,7 +550,6 @@ namespace RPGGame
                 lblWordToType.Location.Y - 50);
             this.Controls.Add(extraTimeLabel);
 
-            // Use System.Windows.Forms.Timer explicitly
             var feedbackTimer = new System.Windows.Forms.Timer { Interval = 1000 };
             feedbackTimer.Tick += (s, e) => {
                 this.Controls.Remove(extraTimeLabel);
@@ -590,7 +564,6 @@ namespace RPGGame
             int originalDamage = player.Damage;
             player.Damage *= 2;
 
-            // Visual feedback
             var damageLabel = new Label
             {
                 Text = "2X DAMAGE!",
@@ -603,7 +576,6 @@ namespace RPGGame
                 lblEnemyInfo.Location.Y + 40);
             this.Controls.Add(damageLabel);
 
-            // Use System.Windows.Forms.Timer explicitly
             var damageTimer = new System.Windows.Forms.Timer { Interval = 5000 };
             damageTimer.Tick += (s, e) => {
                 player.Damage = originalDamage;
@@ -616,10 +588,8 @@ namespace RPGGame
 
         private void ClearAllControls()
         {
-            // Suspend layout to prevent flickering
             this.SuspendLayout();
 
-            // Create a list to avoid modification during iteration
             var controlsToRemove = this.Controls.Cast<Control>().ToList();
 
             foreach (var control in controlsToRemove)
@@ -630,7 +600,6 @@ namespace RPGGame
             this.Controls.Clear();
             this.ResumeLayout();
 
-            // Force immediate cleanup
             GC.Collect();
             GC.WaitForPendingFinalizers();
         }
@@ -671,10 +640,9 @@ namespace RPGGame
 
                 if (currentEnemy.Health <= 0)
                 {
-                    // Grant ability charges when defeating enemies
                     player.SkipWordCharges += 1;
                     player.ExtraTimeCharges += 1;
-                    if (currentMapLevel % 3 == 0) // Every 3 levels
+                    if (currentMapLevel % 3 == 0)
                     {
                         player.DoubleDamageCharges += 1;
                     }
@@ -684,10 +652,8 @@ namespace RPGGame
                     player.EnemiesDefeated++;
                     player.Score += (int)selectedDifficulty * 100;
 
-                    // Mark current level as completed
                     mapLevels[currentMapLevel].IsCompleted = true;
 
-                    // Unlock next level if available
                     if (currentMapLevel < mapLevels.Count - 1)
                     {
                         mapLevels[currentMapLevel + 1].IsCurrent = true;
@@ -698,10 +664,9 @@ namespace RPGGame
                         timer.Stop();
                     }
 
-                    // Return to map
                     showMap = true;
                     this.Controls.Clear();
-                    this.Invalidate(); // Force redraw to show map
+                    this.Invalidate();
 
                     MessageBox.Show($"You defeated the {currentEnemy.Name}!\n" +
                                   $"Level {currentMapLevel + 1} completed!\n" +
@@ -729,10 +694,8 @@ namespace RPGGame
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            // First stop the timer to prevent re-entrancy
             timer.Stop();
 
-            // Check if we're still in battle (might have exited to menu)
             if (!showMap && this.Controls.Contains(lblEnemyInfo))
             {
                 player.Health -= currentEnemy.Damage;
