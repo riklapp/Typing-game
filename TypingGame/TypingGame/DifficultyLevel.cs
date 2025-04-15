@@ -1,4 +1,5 @@
-﻿namespace RPGGame
+﻿// DifficultyLevel.cs
+namespace RPGGame
 {
     public enum DifficultyLevel
     {

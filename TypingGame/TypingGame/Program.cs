@@ -1,4 +1,5 @@
-﻿using System;
+﻿// Program.cs
+using System;
 using System.Windows.Forms;
 
 namespace RPGGame
@@ -10,7 +11,9 @@ namespace RPGGame
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+
+            GameForm gameForm = new GameForm();
+            Application.Run(gameForm);
         }
     }
 }

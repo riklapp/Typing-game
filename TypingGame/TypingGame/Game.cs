@@ -1,10 +1,20 @@
-﻿namespace RPGGame
+﻿// Game.cs
+using System;
+using System.Windows.Forms;
+
+namespace RPGGame
 {
     public class Game
     {
         public void Start()
         {
-            MessageBox.Show("Game Started!", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            ShowGameForm();
+        }
+
+        private void ShowGameForm()
+        {
+            GameForm gameForm = new GameForm();
+            gameForm.ShowDialog();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿namespace RPGGame
+﻿// Ability.cs
+namespace RPGGame
 {
     public class Ability
     {
