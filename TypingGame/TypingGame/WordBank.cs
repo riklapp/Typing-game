@@ -1,5 +1,4 @@
 ﻿// WordBank.cs
-using System.Collections.Generic;
 
 namespace RPGGame
 {
@@ -9,10 +8,26 @@ namespace RPGGame
         {
             return difficultyLevel switch
             {
-                0 => new List<string> { "sword", "shield", "arrow", "potion", "helmet", "boots", "gloves", "cloak" },
-                1 => new List<string> { "battle", "charge", "defend", "victory", "combat", "strategy", "warrior", "soldier" },
-                2 => new List<string> { "apocalypse", "annihilation", "cataclysm", "executioner", "obliterate", "vengeance", "armageddon", "destruction" },
-                _ => new List<string> { "practice", "training", "exercise" }
+                0 => new List<string> {
+                    "king", "queen", "sword", "castle", "knight", "horse", "shield", "crown",
+                    "dragon", "flag", "tavern", "axe", "bowl", "lance", "staff", "dungeon",
+                    "page", "joust", "peasant", "tunic"
+                },
+
+                1 => new List<string> {
+                    "chivalry", "catapult", "sorcerer", "trebuchet", "jester", "goblet",
+                    "blacksmith", "courtier", "alchemist", "fiefdom", "heraldry", "quest",
+                    "minstrel", "battalion", "garrison", "fortress", "vassal", "apothecary",
+                    "scroll", "tapestry", "barracks"
+                },
+
+                2 => new List<string> {
+                    "feudalism", "crusade", "inquisition", "serfdom", "monastery",
+                    "chancellor", "vanguard", "diplomacy", "armament", "reconquista",
+                    "constabulary", "retribution", "excommunication", "tournament",
+                    "heretic", "scepter", "beseeching", "armory", "enchantment",
+                    "cavalry", "diplomat"
+                }
             };
         }
     }
