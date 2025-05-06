@@ -1,4 +1,3 @@
-﻿/*
 using NUnit.Framework;
 
 namespace RPGGame.Tests
@@ -205,4 +204,3 @@ namespace RPGGame.Tests
         }
     }
 }
-*/
